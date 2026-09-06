@@ -25,34 +25,8 @@ export interface User {
 
 // ── Challenge ───────────────────────────────────────────────────────────────
 
-export type ChallengeStatus =
-  | "DRAFT"
-  | "PUBLISHED"
-  | "ACCEPTING_PROPOSALS"
-  | "UNDER_EVALUATION"
-  | "PILOT_PHASE"
-  | "COMPLETED"
-  | "CANCELLED";
+export * from "./challenge";
 
-export interface Challenge {
-  id: string;
-  title: string;
-  description: string;
-  department: string;
-  status: ChallengeStatus;
-  domain: string;
-  technologies: string[];
-  expectedOutcomes: string[];
-  kpis: KPIDefinition[];
-  constraints: string[];
-  budget: number;
-  pilotDuration: number; // in weeks
-  publishedAt?: string;
-  deadline?: string;
-  proposalCount: number;
-  createdAt: string;
-  updatedAt: string;
-}
 
 // ── Startup ─────────────────────────────────────────────────────────────────
 
