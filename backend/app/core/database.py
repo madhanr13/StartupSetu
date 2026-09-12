@@ -57,5 +57,12 @@ def get_db() -> Session:
 
 
 def create_tables() -> None:
-    """Create all tables defined by Base subclasses."""
+    """Create all tables defined by Base subclasses and run lightweight schema updates."""
     Base.metadata.create_all(bind=engine)
+    try:
+        with engine.connect() as conn:
+            from sqlalchemy import text
+            conn.execute(text("ALTER TABLE audit_events ADD COLUMN ip_address VARCHAR(45);"))
+            conn.commit()
+    except Exception:
+        pass  # Column already exists or table does not need migration

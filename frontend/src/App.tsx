@@ -28,6 +28,29 @@ import ChallengeListPage from "@/pages/challenges/ChallengeListPage";
 import ChallengeCreatePage from "@/pages/challenges/ChallengeCreatePage";
 import ChallengeDetailPage from "@/pages/challenges/ChallengeDetailPage";
 
+// Startup Directory & AI Discovery pages
+import StartupListPage from "@/pages/startups/StartupListPage";
+import StartupDetailPage from "@/pages/startups/StartupDetailPage";
+import FindStartupsPage from "@/pages/challenges/FindStartupsPage";
+
+// Proposal Management pages
+import { ProposalSubmitPage } from "@/pages/proposals/ProposalSubmitPage";
+import { ProposalListPage } from "@/pages/proposals/ProposalListPage";
+import { ProposalDetailPage } from "@/pages/proposals/ProposalDetailPage";
+import { ProposalEvaluatePage } from "@/pages/proposals/ProposalEvaluatePage";
+
+// Pilot Management pages
+import { PilotListPage } from "@/pages/pilots/PilotListPage";
+import { PilotCreatePage } from "@/pages/pilots/PilotCreatePage";
+import { PilotDetailPage } from "@/pages/pilots/PilotDetailPage";
+import ProcurementDecisionPage from "@/pages/pilots/ProcurementDecisionPage";
+import ProcurementScaleUpPage from "@/pages/procurement/ProcurementScaleUpPage";
+import AnalyticsDashboardPage from "@/pages/analytics/AnalyticsDashboardPage";
+import AuditLogPage from "@/pages/audit/AuditLogPage";
+import InnovationMemoryPage from "@/pages/memory/InnovationMemoryPage";
+import InnovationMemoryDetailPage from "@/pages/memory/InnovationMemoryDetailPage";
+import SettingsPage from "@/pages/settings/SettingsPage";
+
 // Placeholder for unimplemented pages
 import PlaceholderPage from "@/pages/PlaceholderPage";
 
@@ -68,15 +91,25 @@ export default function App() {
           <Route path="/gov/challenges" element={<ChallengeListPage />} />
           <Route path="/gov/challenges/new" element={<ChallengeCreatePage />} />
           <Route path="/gov/challenges/:id" element={<ChallengeDetailPage />} />
-          <Route path="/gov/startup-discovery" element={<PlaceholderPage title="Startup Discovery" description="AI-powered startup matching and discovery" />} />
-          <Route path="/gov/proposals" element={<PlaceholderPage title="Proposals" description="Review and evaluate startup proposals" />} />
-          <Route path="/gov/pilots" element={<PlaceholderPage title="Pilots" description="Manage active pilot programs" />} />
-          <Route path="/gov/kpi-analytics" element={<PlaceholderPage title="KPI Analytics" description="Track pilot KPIs and performance metrics" />} />
-          <Route path="/gov/procurement" element={<PlaceholderPage title="Procurement" description="AI-assisted procurement recommendations" />} />
-          <Route path="/gov/innovation-memory" element={<PlaceholderPage title="Innovation Memory" description="Institutional knowledge and lessons learned" />} />
-          <Route path="/gov/reports" element={<PlaceholderPage title="Reports" description="Generate and view procurement reports" />} />
-          <Route path="/gov/audit-logs" element={<PlaceholderPage title="Audit Logs" description="View system audit trail" />} />
-          <Route path="/gov/settings" element={<PlaceholderPage title="Settings" description="Configure preferences and notifications" />} />
+          <Route path="/gov/challenges/:id/startups" element={<FindStartupsPage />} />
+          <Route path="/gov/startups" element={<StartupListPage />} />
+          <Route path="/gov/startups/:id" element={<StartupDetailPage />} />
+          <Route path="/gov/startup-discovery" element={<StartupListPage />} />
+          <Route path="/gov/proposals" element={<ProposalListPage />} />
+          <Route path="/gov/proposals/:id" element={<ProposalDetailPage />} />
+          <Route path="/gov/proposals/:id/evaluate" element={<ProposalEvaluatePage />} />
+          <Route path="/gov/pilots" element={<PilotListPage />} />
+          <Route path="/gov/pilots/:id" element={<PilotDetailPage />} />
+          <Route path="/gov/pilots/:id/decision" element={<ProcurementDecisionPage />} />
+          <Route path="/gov/analytics" element={<AnalyticsDashboardPage />} />
+          <Route path="/gov/kpi-analytics" element={<AnalyticsDashboardPage />} />
+          <Route path="/gov/procurement" element={<ProcurementScaleUpPage />} />
+          <Route path="/gov/procurement/scale-up" element={<ProcurementScaleUpPage />} />
+          <Route path="/gov/innovation-memory" element={<InnovationMemoryPage />} />
+          <Route path="/gov/innovation-memory/:id" element={<InnovationMemoryDetailPage />} />
+          <Route path="/gov/reports" element={<AnalyticsDashboardPage />} />
+          <Route path="/gov/audit-logs" element={<AuditLogPage />} />
+          <Route path="/gov/settings" element={<SettingsPage />} />
         </Route>
       </Route>
 
@@ -89,11 +122,17 @@ export default function App() {
         <Route element={<AppLayout />}>
           <Route path="/startup" element={<StartupDashboard />} />
           <Route path="/startup/dashboard" element={<StartupDashboard />} />
-          <Route path="/startup/profile" element={<PlaceholderPage title="My Profile" description="Manage your startup profile and capabilities" />} />
+          <Route path="/startup/profile" element={<StartupDetailPage />} />
+          <Route path="/startup/startups" element={<StartupListPage />} />
+          <Route path="/startup/startups/:id" element={<StartupDetailPage />} />
           <Route path="/startup/challenges" element={<ChallengeListPage />} />
           <Route path="/startup/challenges/:id" element={<ChallengeDetailPage />} />
-          <Route path="/startup/proposals" element={<PlaceholderPage title="My Proposals" description="View and manage your submitted proposals" />} />
-          <Route path="/startup/pilots" element={<PlaceholderPage title="My Pilots" description="Track your active pilot programs" />} />
+          <Route path="/startup/challenges/:id/submit-proposal" element={<ProposalSubmitPage />} />
+          <Route path="/challenges/:id/submit-proposal" element={<ProposalSubmitPage />} />
+          <Route path="/startup/proposals" element={<ProposalListPage />} />
+          <Route path="/startup/proposals/:id" element={<ProposalDetailPage />} />
+          <Route path="/startup/pilots" element={<PilotListPage />} />
+          <Route path="/startup/pilots/:id" element={<PilotDetailPage />} />
           <Route path="/startup/feedback" element={<PlaceholderPage title="Feedback" description="View evaluation feedback on your proposals" />} />
           <Route path="/startup/notifications" element={<PlaceholderPage title="Notifications" description="View all notifications and alerts" />} />
         </Route>
@@ -110,8 +149,13 @@ export default function App() {
           <Route path="/evaluator/dashboard" element={<EvaluatorDashboard />} />
           <Route path="/evaluator/challenges" element={<ChallengeListPage />} />
           <Route path="/evaluator/challenges/:id" element={<ChallengeDetailPage />} />
-          <Route path="/evaluator/evaluations" element={<PlaceholderPage title="Assigned Evaluations" description="Review and score assigned proposals" />} />
-          <Route path="/evaluator/pilots" element={<PlaceholderPage title="Pilots" description="Monitor pilot programs under evaluation" />} />
+          <Route path="/evaluator/startups" element={<StartupListPage />} />
+          <Route path="/evaluator/startups/:id" element={<StartupDetailPage />} />
+          <Route path="/evaluator/evaluations" element={<ProposalListPage />} />
+          <Route path="/evaluator/proposals/:id" element={<ProposalDetailPage />} />
+          <Route path="/evaluator/proposals/:id/evaluate" element={<ProposalEvaluatePage />} />
+          <Route path="/evaluator/pilots" element={<PilotListPage />} />
+          <Route path="/evaluator/pilots/:id" element={<PilotDetailPage />} />
           <Route path="/evaluator/validation" element={<PlaceholderPage title="Validation" description="Validate pilot outcomes and KPI achievements" />} />
         </Route>
       </Route>
@@ -127,13 +171,36 @@ export default function App() {
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/users" element={<PlaceholderPage title="Users" description="Manage platform user accounts" />} />
           <Route path="/admin/departments" element={<PlaceholderPage title="Departments" description="Manage government departments" />} />
-          <Route path="/admin/startups" element={<PlaceholderPage title="Startups" description="View registered startup profiles" />} />
+          <Route path="/admin/startups" element={<StartupListPage />} />
+          <Route path="/admin/startups/:id" element={<StartupDetailPage />} />
           <Route path="/admin/challenges" element={<ChallengeListPage />} />
           <Route path="/admin/challenges/:id" element={<ChallengeDetailPage />} />
-          <Route path="/admin/audit-logs" element={<PlaceholderPage title="Audit Logs" description="Full system audit trail" />} />
-          <Route path="/admin/reports" element={<PlaceholderPage title="Reports" description="Platform-wide reports and analytics" />} />
-          <Route path="/admin/system-settings" element={<PlaceholderPage title="System Settings" description="Configure platform settings" />} />
+          <Route path="/admin/pilots" element={<PilotListPage />} />
+          <Route path="/admin/audit-logs" element={<AuditLogPage />} />
+          <Route path="/admin/reports" element={<AnalyticsDashboardPage />} />
+          <Route path="/admin/analytics" element={<AnalyticsDashboardPage />} />
+          <Route path="/admin/system-settings" element={<SettingsPage />} />
+          <Route path="/admin/settings" element={<SettingsPage />} />
         </Route>
+      </Route>
+
+      {/* ── Generic Authenticated Routes ───────────────────── */}
+      <Route element={<ProtectedRoute allowedRoles={["GOVERNMENT_OFFICER", "STARTUP", "EVALUATOR", "ADMIN", "AUDITOR"]} />}>
+        <Route element={<AppLayout />}>
+          <Route path="/proposals" element={<ProposalListPage />} />
+          <Route path="/proposals/:id" element={<ProposalDetailPage />} />
+          <Route path="/proposals/:id/evaluate" element={<ProposalEvaluatePage />} />
+          <Route path="/proposals/:proposalId/create-pilot" element={<PilotCreatePage />} />
+          <Route path="/pilots" element={<PilotListPage />} />
+          <Route path="/pilots/:id" element={<PilotDetailPage />} />
+          <Route path="/pilots/:id/decision" element={<ProcurementDecisionPage />} />
+          <Route path="/procurement" element={<ProcurementScaleUpPage />} />
+          <Route path="/procurement/scale-up" element={<ProcurementScaleUpPage />} />
+          <Route path="/analytics" element={<AnalyticsDashboardPage />} />
+          <Route path="/kpi-analytics" element={<AnalyticsDashboardPage />} />
+          <Route path="/challenges/:id/submit-proposal" element={<ProposalSubmitPage />} />
+        </Route>
+
       </Route>
 
       {/* ── Fallback Routes ────────────────────────────────────── */}

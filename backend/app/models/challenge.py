@@ -49,11 +49,12 @@ class Challenge(Base):
     title: Mapped[str] = mapped_column(String(500), nullable=False)
     description: Mapped[str] = mapped_column(Text, nullable=False, default="")
     problem_statement: Mapped[str] = mapped_column(Text, nullable=False, default="")
-    domain: Mapped[str] = mapped_column(String(255), nullable=False, default="")
+    domain: Mapped[str] = mapped_column(String(255), nullable=False, default="", index=True)
     status: Mapped[ChallengeStatus] = mapped_column(
         Enum(ChallengeStatus, name="challenge_status", create_constraint=True),
         nullable=False,
         default=ChallengeStatus.DRAFT,
+        index=True,
     )
 
     # Budget range
@@ -68,7 +69,7 @@ class Challenge(Base):
 
     # Ownership
     department_id: Mapped[str | None] = mapped_column(
-        String(36), ForeignKey("departments.id"), nullable=True
+        String(36), ForeignKey("departments.id"), nullable=True, index=True
     )
     created_by: Mapped[str] = mapped_column(
         String(36), ForeignKey("users.id"), nullable=False

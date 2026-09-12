@@ -36,6 +36,19 @@ def login(
             detail="Invalid email or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
+    
+    from app.services.audit_service import AuditService
+    from app.models.audit import AuditAction
+    AuditService.log_event(
+        db=db,
+        action=AuditAction.USER_LOGIN,
+        entity_type="USER",
+        entity_id=user.id,
+        actor=user,
+        summary=f"User '{user.name}' ({user.role.value}) logged in.",
+        details={"email": user.email, "role": user.role.value},
+    )
+
     return create_token_response(user)
 
 

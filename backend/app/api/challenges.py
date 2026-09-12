@@ -212,3 +212,52 @@ async def structure_challenge_endpoint(
     analyzer = get_challenge_analyzer()
     result = await analyzer.analyze(data.problem_statement, data.domain)
     return result
+
+
+# ── AI Startup Discovery & Comparison ───────────────────────────────────────
+
+from app.services.discovery_service import discovery_service
+from app.schemas.startup import (
+    StartupMatchRecommendation,
+    StartupComparisonRequest,
+    StartupComparisonResponse,
+)
+
+
+@router.get("/{challenge_id}/startup-recommendations", response_model=list[StartupMatchRecommendation])
+def get_startup_recommendations(
+    challenge_id: str,
+    current_user: Annotated[User, Depends(get_current_user)],
+    db: Session = Depends(get_db),
+) -> list[StartupMatchRecommendation]:
+    """
+    Get AI-ranked startup recommendations for a government challenge.
+    Uses semantic vector search + deterministic capability scoring + eligibility analysis.
+    """
+    try:
+        return discovery_service.discover_startups_for_challenge(db, challenge_id, current_user)
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail=str(e)
+        )
+
+
+@router.post("/{challenge_id}/compare-startups", response_model=StartupComparisonResponse)
+def compare_startups_endpoint(
+    challenge_id: str,
+    data: StartupComparisonRequest,
+    current_user: Annotated[User, Depends(get_current_user)],
+    db: Session = Depends(get_db),
+) -> StartupComparisonResponse:
+    """
+    Compare selected startups side-by-side for a specific challenge.
+    """
+    try:
+        return discovery_service.compare_startups_for_challenge(
+            db, challenge_id, data.startup_ids
+        )
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail=str(e)
+        )
+

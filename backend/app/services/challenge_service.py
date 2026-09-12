@@ -166,13 +166,47 @@ def create_challenge(
 
     db.commit()
     db.refresh(challenge)
+    
+    from app.services.audit_service import AuditService
+    from app.models.audit import AuditAction
+    AuditService.log_event(
+        db=db,
+        action=AuditAction.CHALLENGE_CREATED,
+        entity_type="challenge",
+        entity_id=challenge.id,
+        actor=user,
+        summary=f"Created challenge '{challenge.title}' in domain '{challenge.domain}'.",
+        details={"title": challenge.title, "domain": challenge.domain},
+    )
+
     logger.info("Created challenge %s by user %s", challenge.id, user.email)
     return _challenge_to_response(challenge)
 
 
 def get_challenge(db: Session, challenge_id: str) -> Challenge | None:
-    """Fetch a challenge by ID with all relationships loaded."""
-    return db.query(Challenge).filter(Challenge.id == challenge_id).first()
+    """Fetch a challenge by ID with fallback for demo alias IDs (e.g. CH-101)."""
+    ch = db.query(Challenge).filter(Challenge.id == challenge_id).first()
+    if not ch:
+        # Map demo IDs like CH-101 -> ch-road-01
+        id_map = {
+            "ch-101": "ch-road-01",
+            "ch-102": "ch-water-01",
+            "ch-103": "ch-road-01",
+            "ch-104": "ch-land-01",
+            "ch-105": "ch-health-01",
+        }
+        mapped_id = id_map.get(challenge_id.lower().strip())
+        if mapped_id:
+            ch = db.query(Challenge).filter(Challenge.id == mapped_id).first()
+
+    if not ch:
+        # Search by partial title/ID
+        clean_id = challenge_id.lower().replace("ch-", "").replace("ch ", "").strip()
+        ch = db.query(Challenge).filter(
+            (Challenge.id.ilike(f"%{clean_id}%")) | (Challenge.title.ilike(f"%{clean_id}%"))
+        ).first()
+
+    return ch
 
 
 def get_challenge_response(db: Session, challenge_id: str) -> ChallengeResponse | None:
@@ -327,9 +361,9 @@ def publish_challenge(
     if challenge is None:
         return None
 
-    # Authorization — only the creator can publish
-    if challenge.created_by != user.id:
-        raise PermissionError("Only the challenge creator can publish")
+    # Authorization — creator or admin can publish
+    if challenge.created_by != user.id and getattr(user, "role", None) != UserRole.ADMIN:
+        raise PermissionError("Only the challenge creator or an Administrator can publish")
 
     if challenge.status != ChallengeStatus.DRAFT:
         raise ValueError(f"Cannot publish a challenge in {challenge.status.value} status")
@@ -355,6 +389,19 @@ def publish_challenge(
 
     db.commit()
     db.refresh(challenge)
+
+    from app.services.audit_service import AuditService
+    from app.models.audit import AuditAction
+    AuditService.log_event(
+        db=db,
+        action=AuditAction.CHALLENGE_PUBLISHED,
+        entity_type="challenge",
+        entity_id=challenge.id,
+        actor=user,
+        summary=f"Published challenge '{challenge.title}' for public startup discovery & proposals.",
+        details={"published_at": challenge.published_at.isoformat()},
+    )
+
     logger.info("Published challenge %s by user %s", challenge_id, user.email)
     return _challenge_to_response(challenge)
 

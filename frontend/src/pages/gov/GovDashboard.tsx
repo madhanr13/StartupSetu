@@ -2,6 +2,7 @@
  * Government Officer Dashboard — Operational Task-Oriented View.
  */
 
+import { useNavigate } from "react-router-dom";
 import PageHeader from "@/components/layout/PageHeader";
 import StatCard from "@/components/ui/StatCard";
 import StatusBadge from "@/components/ui/StatusBadge";
@@ -59,6 +60,7 @@ const activePilotsData: DemoPilot[] = [
 ];
 
 export default function GovDashboard() {
+  const navigate = useNavigate();
 
   // Active Challenges Table Columns
   const challengeColumns: TableColumn<DemoChallenge>[] = [
@@ -67,7 +69,10 @@ export default function GovDashboard() {
       header: "Challenge",
       render: (row) => (
         <div>
-          <span className="font-bold text-slate-900 text-xs hover:text-blue-700 cursor-pointer">
+          <span
+            onClick={() => navigate(`/gov/challenges/${row.id}`)}
+            className="font-bold text-slate-900 text-xs hover:text-blue-700 cursor-pointer"
+          >
             {row.title}
           </span>
           <span className="block text-[11px] text-slate-500 font-medium">
@@ -106,9 +111,10 @@ export default function GovDashboard() {
       header: "Action",
       width: "90px",
       align: "right",
-      render: () => (
+      render: (row) => (
         <button
           type="button"
+          onClick={() => navigate(`/gov/challenges/${row.id}`)}
           className="inline-flex items-center gap-1 text-xs font-semibold text-blue-700 hover:text-blue-900 hover:bg-blue-50 px-2 py-1 rounded transition-colors"
         >
           <Eye className="w-3.5 h-3.5" />

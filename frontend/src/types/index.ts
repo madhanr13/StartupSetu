@@ -30,79 +30,16 @@ export * from "./challenge";
 
 // ── Startup ─────────────────────────────────────────────────────────────────
 
-export interface Startup {
-  id: string;
-  name: string;
-  logo?: string;
-  description: string;
-  domain: string[];
-  technologies: string[];
-  founded: string;
-  teamSize: number;
-  dpiitRecognized: boolean;
-  website?: string;
-  matchScore?: number;
-  matchBreakdown?: MatchBreakdown;
-}
-
-export interface MatchBreakdown {
-  technologyFit: number;
-  domainFit: number;
-  previousProjects: number;
-  teamCapability: number;
-  scalability: number;
-  securityReadiness: number;
-  budgetCompatibility: number;
-  explanation: string;
-}
+export * from "./startup";
 
 // ── Proposal ────────────────────────────────────────────────────────────────
 
-export type ProposalStatus =
-  | "SUBMITTED"
-  | "SCREENING"
-  | "AI_ANALYSIS"
-  | "UNDER_REVIEW"
-  | "SHORTLISTED"
-  | "SELECTED"
-  | "REJECTED";
-
-export interface Proposal {
-  id: string;
-  challengeId: string;
-  challengeTitle: string;
-  startupId: string;
-  startupName: string;
-  status: ProposalStatus;
-  submittedAt: string;
-  aiScore?: number;
-  humanScore?: number;
-  finalScore?: number;
-  documentUrl?: string;
-}
+export * from "./proposal";
 
 // ── Pilot ───────────────────────────────────────────────────────────────────
 
-export type PilotStatus =
-  | "SETUP"
-  | "IN_PROGRESS"
-  | "MONITORING"
-  | "VALIDATION"
-  | "COMPLETED"
-  | "TERMINATED";
-
-export interface Pilot {
-  id: string;
-  challengeId: string;
-  challengeTitle: string;
-  startupId: string;
-  startupName: string;
-  status: PilotStatus;
-  startDate: string;
-  endDate: string;
-  progress: number; // 0-100
-  kpis: KPIResult[];
-}
+export * from "./pilot";
+export * from "./procurement";
 
 // ── KPIs ────────────────────────────────────────────────────────────────────
 
@@ -126,22 +63,9 @@ export interface KPIResult {
 }
 
 // ── Procurement Decision ────────────────────────────────────────────────────
+// (ProcurementDecision, DecisionType, etc. are defined in ./procurement.ts
+//  and re-exported via `export * from "./procurement"` below)
 
-export type ProcurementDecision = "SCALE" | "EXTEND_PILOT" | "REJECT";
-
-export interface ProcurementRecord {
-  id: string;
-  pilotId: string;
-  challengeTitle: string;
-  startupName: string;
-  aiRecommendation: ProcurementDecision;
-  aiConfidence: number;
-  aiExplanation: string;
-  humanDecision?: ProcurementDecision;
-  decidedBy?: string;
-  decidedAt?: string;
-  notes?: string;
-}
 
 // ── Audit Log ───────────────────────────────────────────────────────────────
 
@@ -213,3 +137,5 @@ export interface AuthState {
   isLoading: boolean;
   error: string | null;
 }
+
+export * from "./analytics";

@@ -16,7 +16,6 @@ import type { Challenge, ChallengeStatus } from "@/types";
 import {
   Plus,
   Search,
-  Filter,
   Calendar,
   IndianRupee,
   Clock,
@@ -167,7 +166,7 @@ export default function ChallengeListPage() {
 
       {/* Content */}
       {loading ? (
-        <LoadingState label="Loading challenges..." />
+        <LoadingState message="Loading challenges..." />
       ) : error ? (
         <ErrorState message={error} onRetry={fetchChallenges} />
       ) : !data || data.items.length === 0 ? (

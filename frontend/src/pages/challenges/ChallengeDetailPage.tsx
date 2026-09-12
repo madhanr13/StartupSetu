@@ -14,7 +14,6 @@ import { getChallenge, publishChallenge } from "@/services/challengeService";
 import type { Challenge } from "@/types";
 import {
   ArrowLeft,
-  Building2,
   Calendar,
   Clock,
   IndianRupee,
@@ -79,7 +78,7 @@ export default function ChallengeDetailPage() {
     }).format(amount);
   };
 
-  if (loading) return <LoadingState label="Loading challenge details..." />;
+  if (loading) return <LoadingState message="Loading challenge details..." />;
   if (error || !challenge) return <ErrorState message={error || "Challenge not found"} onRetry={fetchChallengeData} />;
 
   const isGovOfficer = user?.role === "GOVERNMENT_OFFICER" || user?.role === "ADMIN";
@@ -114,6 +113,17 @@ export default function ChallengeDetailPage() {
           </div>
 
           <div className="flex items-center gap-2">
+            {isGovOfficer && (
+              <button
+                type="button"
+                onClick={() => navigate(`/gov/challenges/${challenge.id}/startups`)}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-700 to-indigo-800 hover:from-purple-800 hover:to-indigo-900 text-white rounded-lg text-xs font-bold shadow-md transition-all"
+              >
+                <Sparkles className="w-4 h-4 text-purple-200" />
+                <span>Find Startups</span>
+              </button>
+            )}
+
             {isGovOfficer && challenge.status === "DRAFT" && (
               <button
                 type="button"
@@ -133,7 +143,7 @@ export default function ChallengeDetailPage() {
             {isStartup && (challenge.status === "PUBLISHED" || challenge.status === "ACCEPTING_PROPOSALS") && (
               <button
                 type="button"
-                onClick={() => alert("Proposal submission form will be available in Phase 3.")}
+                onClick={() => navigate(`/challenges/${challenge.id}/submit-proposal`)}
                 className="inline-flex items-center gap-1.5 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold shadow-sm transition-colors"
               >
                 <Send className="w-4 h-4" />
