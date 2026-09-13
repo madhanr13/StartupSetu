@@ -158,7 +158,7 @@ export const ProposalDetailPage: React.FC = () => {
                 <span className="text-xs font-bold px-3 py-1 rounded-full bg-slate-900 text-white">
                   Status: {proposal.status}
                 </span>
-                {proposal.average_evaluation_score !== undefined && (
+                {proposal.average_evaluation_score != null && (
                   <span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
                     Score: {proposal.average_evaluation_score.toFixed(1)} / 100
                   </span>
@@ -190,7 +190,7 @@ export const ProposalDetailPage: React.FC = () => {
               <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Financial & Timeline</div>
               <div className="text-2xl font-bold text-slate-900 flex items-center">
                 <IndianRupee className="w-5 h-5 text-emerald-600" />
-                <span>{(proposal.estimated_cost / 100000).toFixed(2)} Lakhs</span>
+                <span>{((proposal.estimated_cost ?? 0) / 100000).toFixed(2)} Lakhs</span>
               </div>
               <div className="text-xs text-slate-600 flex items-center gap-1">
                 <Calendar className="w-3.5 h-3.5 text-slate-400" />
@@ -417,7 +417,7 @@ export const ProposalDetailPage: React.FC = () => {
                     </div>
                     <div className="text-right">
                       <span className="text-xs text-slate-500 block">Weighted Total</span>
-                      <span className="text-2xl font-bold text-emerald-600">{ev.total_weighted_score.toFixed(1)} / 100</span>
+                      <span className="text-2xl font-bold text-emerald-600">{(ev.total_weighted_score ?? 0).toFixed(1)} / 100</span>
                     </div>
                   </div>
 

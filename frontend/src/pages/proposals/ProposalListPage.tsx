@@ -65,8 +65,8 @@ export const ProposalListPage: React.FC = () => {
     const q = searchQuery.toLowerCase();
     return (
       p.title.toLowerCase().includes(q) ||
-      p.startup?.company_name.toLowerCase().includes(q) ||
-      p.challenge?.title.toLowerCase().includes(q)
+      (p.startup?.company_name ?? '').toLowerCase().includes(q) ||
+      (p.challenge?.title ?? '').toLowerCase().includes(q)
     );
   });
 
@@ -190,7 +190,7 @@ export const ProposalListPage: React.FC = () => {
                     <div className="flex flex-wrap items-center gap-2">
                       {getStatusBadge(proposal.status)}
                       <span className="text-xs font-semibold text-indigo-600 bg-indigo-50 px-2.5 py-0.5 rounded-md">
-                        ₹{(proposal.estimated_cost / 100000).toFixed(2)} Lakhs
+                        ₹{((proposal.estimated_cost ?? 0) / 100000).toFixed(2)} Lakhs
                       </span>
                       <span className="text-xs text-slate-500">
                         Duration: {proposal.implementation_duration_days} days
@@ -224,7 +224,7 @@ export const ProposalListPage: React.FC = () => {
 
                   {/* Right Score & Actions Panel */}
                   <div className="flex flex-col items-start md:items-end justify-between gap-3 border-t md:border-t-0 border-slate-100 pt-3 md:pt-0 shrink-0">
-                    {proposal.average_evaluation_score !== undefined && (
+                    {proposal.average_evaluation_score != null && (
                       <div className="text-right">
                         <span className="text-xs text-slate-500 block">Evaluation Score</span>
                         <span className="text-xl font-bold text-emerald-600">

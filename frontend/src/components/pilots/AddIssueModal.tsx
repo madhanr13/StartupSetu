@@ -87,7 +87,7 @@ export const AddIssueModal: React.FC<Props> = ({ pilotId, isOpen, onClose, onSuc
               <option value="LOW">Low</option>
               <option value="MEDIUM">Medium</option>
               <option value="HIGH">High</option>
-              <option value="CRITICAL">Critical ⚠️</option>
+              <option value="CRITICAL">Critical</option>
             </select>
           </div>
 

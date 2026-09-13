@@ -94,7 +94,7 @@ export const UpdateMilestoneModal: React.FC<Props> = ({
               <option value="NOT_STARTED">Not Started</option>
               <option value="IN_PROGRESS">In Progress</option>
               <option value="COMPLETED">Completed (100%)</option>
-              <option value="BLOCKED">Blocked ⚠️</option>
+              <option value="BLOCKED">Blocked</option>
             </select>
           </div>
 

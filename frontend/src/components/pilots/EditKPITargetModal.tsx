@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Pencil } from 'lucide-react';
 import type { PilotKPI } from '../../types/pilot';
 import { pilotService } from '../../services/pilotService';
 
@@ -56,7 +57,8 @@ export const EditKPITargetModal: React.FC<Props> = ({
       <div className="bg-white rounded-xl shadow-xl max-w-md w-full overflow-hidden border border-slate-200">
         <div className="bg-amber-600 text-white px-6 py-4 flex items-center justify-between">
           <h3 className="font-semibold text-lg flex items-center gap-2">
-            <span>⚠️ Modify Official Target: {kpi.name}</span>
+            <Pencil className="w-5 h-5" />
+            <span>Modify Official Target: {kpi.name}</span>
           </h3>
           <button
             onClick={onClose}

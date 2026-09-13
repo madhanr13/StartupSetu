@@ -1,6 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, Legend } from 'recharts';
+import {
+  Building,
+  Rocket,
+  Paperclip,
+  BarChart3,
+  Scale,
+  ArrowUpRight,
+  Clock,
+  GraduationCap,
+  Info,
+  Pencil,
+  History,
+  TrendingUp,
+  Calendar,
+  ScrollText,
+  FileCheck,
+} from 'lucide-react';
 import { pilotService } from '../../services/pilotService';
 import type { Pilot, PilotKPI, PilotMilestone } from '../../types/pilot';
 import { useAuth } from '../../context/AuthContext';
@@ -74,7 +91,7 @@ export const PilotDetailPage: React.FC = () => {
       setError(null);
       await pilotService.completePilot(pilot.id);
       fetchPilot();
-      alert('Pilot project successfully completed and marked READY FOR ASSESSMENT! 🎓');
+      alert('Pilot project successfully completed and marked READY FOR ASSESSMENT.');
     } catch (err: any) {
       setError(err.response?.data?.detail || 'Completion validation failed.');
     }
@@ -160,14 +177,16 @@ export const PilotDetailPage: React.FC = () => {
               </div>
 
               {pilot.challenge && (
-                <p className="text-sm text-slate-600 font-medium">
-                  🏢 Department: <span className="text-slate-900 font-bold">{pilot.challenge.department_name}</span> | Challenge:{' '}
+                <p className="text-sm text-slate-600 font-medium flex items-center gap-1.5">
+                  <Building className="w-4 h-4 text-slate-400" />
+                  Department: <span className="text-slate-900 font-bold">{pilot.challenge.department_name}</span> | Challenge:{' '}
                   <span className="text-blue-700 font-semibold">{pilot.challenge.title}</span>
                 </p>
               )}
               {pilot.startup && (
-                <p className="text-sm text-blue-700 font-semibold">
-                  🚀 Executing Startup: <span className="font-bold">{pilot.startup.company_name}</span> (DPIIT Reg: {pilot.startup.dpiit_number})
+                <p className="text-sm text-blue-700 font-semibold flex items-center gap-1.5">
+                  <Rocket className="w-4 h-4" />
+                  Executing Startup: <span className="font-bold">{pilot.startup.company_name}</span> (DPIIT Reg: {pilot.startup.dpiit_number})
                 </p>
               )}
             </div>
@@ -178,7 +197,7 @@ export const PilotDetailPage: React.FC = () => {
                 onClick={() => setShowUploadEvidenceModal(true)}
                 className="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold rounded-lg border border-slate-300 transition-colors"
               >
-                📎 Upload Evidence
+                <Paperclip className="w-3.5 h-3.5" /> Upload Evidence
               </button>
 
               {pilot.kpis.length > 0 && (
@@ -186,7 +205,7 @@ export const PilotDetailPage: React.FC = () => {
                   onClick={() => setActiveKpiForMeasurement(pilot.kpis[0])}
                   className="px-3.5 py-2 bg-blue-50 hover:bg-blue-100 text-blue-800 text-xs font-semibold rounded-lg border border-blue-200 transition-colors"
                 >
-                  📊 Record KPI Measurement
+                  <BarChart3 className="w-3.5 h-3.5" /> Record KPI Measurement
                 </button>
               )}
 
@@ -195,7 +214,7 @@ export const PilotDetailPage: React.FC = () => {
                   to={`/pilots/${pilot.id}/decision`}
                   className="px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white text-xs font-bold rounded-lg shadow-sm transition-colors inline-flex items-center gap-1.5"
                 >
-                  ⚖️ Pilot Assessment & Decision
+                  <Scale className="w-3.5 h-3.5" /> Pilot Assessment & Decision
                 </Link>
               )}
 
@@ -205,7 +224,7 @@ export const PilotDetailPage: React.FC = () => {
                     to="/gov/procurement"
                     className="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold rounded-lg shadow-sm transition-colors inline-flex items-center gap-1.5"
                   >
-                    🚀 View Procurement Scale-Up
+                    <ArrowUpRight className="w-3.5 h-3.5" /> View Procurement Scale-Up
                   </Link>
                   <Link
                     to={`/pilots/${pilot.id}/decision`}
@@ -221,7 +240,7 @@ export const PilotDetailPage: React.FC = () => {
                   to={`/pilots/${pilot.id}/decision`}
                   className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded-lg shadow-sm transition-colors inline-flex items-center gap-1.5"
                 >
-                  ⏱️ Extended Trial & Decisions
+                  <Clock className="w-3.5 h-3.5" /> Extended Trial & Decisions
                 </Link>
               )}
 
@@ -239,7 +258,7 @@ export const PilotDetailPage: React.FC = () => {
                   onClick={handleCompletePilot}
                   className="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold rounded-lg shadow-sm transition-colors"
                 >
-                  🎓 Validate & Complete Pilot
+                  <GraduationCap className="w-3.5 h-3.5" /> Validate & Complete Pilot
                 </button>
               )}
             </div>
@@ -249,7 +268,7 @@ export const PilotDetailPage: React.FC = () => {
           {/* Operational Health Rule Explanation Banner */}
           {pilot.health?.rules_applied && (
             <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg text-xs flex items-start gap-2">
-              <span className="text-base">ℹ️</span>
+              <Info className="w-4 h-4 text-blue-600 shrink-0" />
               <div>
                 <span className="font-bold text-slate-800">Operational Health Rule Diagnostic: </span>
                 <span className="text-slate-600">{pilot.health.rules_applied.join(' | ')}</span>
@@ -293,7 +312,7 @@ export const PilotDetailPage: React.FC = () => {
               </div>
               {pilot.health?.milestones_blocked ? (
                 <span className="text-xs font-mono font-bold text-red-700 bg-red-50 px-2 py-1 rounded border border-red-200">
-                  {pilot.health.milestones_blocked} Blocked ⚠️
+                  {pilot.health.milestones_blocked} Blocked
                 </span>
               ) : (
                 <span className="text-xs font-mono font-bold text-blue-700 bg-blue-50 px-2 py-1 rounded border border-blue-200">
@@ -326,12 +345,12 @@ export const PilotDetailPage: React.FC = () => {
         {/* Navigation Tabs */}
         <div className="border-b border-slate-200 flex space-x-8 bg-white px-6 rounded-xl border shadow-sm overflow-x-auto">
           {[
-            { id: 'kpis', label: '📊 KPI Analytics & Trends', count: pilot.kpis.length },
-            { id: 'milestones', label: '🚩 Milestone Timeline', count: pilot.milestones.length },
-            { id: 'risks', label: '⚠️ Risks & Issues', count: pilot.risks.length + pilot.issues.length },
-            { id: 'evidence', label: '📎 Evidence Gallery', count: pilot.evidence_files.length },
-            { id: 'overview', label: '📋 Governance & Scope' },
-            { id: 'audit', label: '📜 Audit Trail', count: auditTrail.length },
+            { id: 'kpis', label: 'KPI Analytics & Trends', count: pilot.kpis.length },
+            { id: 'milestones', label: 'Milestone Timeline', count: pilot.milestones.length },
+            { id: 'risks', label: 'Risks & Issues', count: pilot.risks.length + pilot.issues.length },
+            { id: 'evidence', label: 'Evidence Gallery', count: pilot.evidence_files.length },
+            { id: 'overview', label: 'Governance & Scope' },
+            { id: 'audit', label: 'Audit Trail', count: auditTrail.length },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -432,7 +451,7 @@ export const PilotDetailPage: React.FC = () => {
                           onClick={() => setActiveKpiForEditTarget(kpi)}
                           className="px-2.5 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 text-xs font-semibold rounded border border-amber-200 transition-colors"
                         >
-                          ✏️ Edit Target
+                          <Pencil className="w-3 h-3" /> Edit Target
                         </button>
                       )}
 
@@ -441,7 +460,7 @@ export const PilotDetailPage: React.FC = () => {
                           onClick={() => setViewHistoryKpi(kpi)}
                           className="px-2 py-1 bg-slate-100 text-slate-600 text-[10px] font-bold rounded hover:bg-slate-200"
                         >
-                          📜 History ({kpi.target_change_history.length})
+                          <History className="w-3 h-3" /> History ({kpi.target_change_history.length})
                         </button>
                       )}
                     </div>
@@ -454,7 +473,7 @@ export const PilotDetailPage: React.FC = () => {
             <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
               <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-slate-100 pb-4">
                 <div>
-                  <h3 className="font-bold text-slate-900 text-base">📈 Historical Metric Trends Analytics</h3>
+                  <h3 className="font-bold text-slate-900 text-base flex items-center gap-2"><TrendingUp className="w-4 h-4 text-blue-600" /> Historical Metric Trends Analytics</h3>
                   <p className="text-slate-500 text-xs mt-0.5">
                     Deterministic time-series comparison of recorded measurements against target baseline.
                   </p>
@@ -568,7 +587,7 @@ export const PilotDetailPage: React.FC = () => {
                         onClick={() => setActiveMilestoneForUpdate(m)}
                         className="px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 hover:bg-slate-100 transition-colors self-start sm:self-auto"
                       >
-                        ✏️ Update Status / Progress
+                        <Pencil className="w-3 h-3" /> Update Status / Progress
                       </button>
                     </div>
 
@@ -577,7 +596,8 @@ export const PilotDetailPage: React.FC = () => {
                     <div className="pl-10 space-y-2">
                       <div className="flex justify-between items-center text-xs text-slate-500 font-medium">
                         <span>
-                          📅 Planned: {new Date(m.planned_start).toLocaleDateString()} to{' '}
+                          <Calendar className="w-3 h-3 text-slate-400 shrink-0" />
+                          Planned: {new Date(m.planned_start).toLocaleDateString()} to{' '}
                           {new Date(m.planned_end).toLocaleDateString()}
                         </span>
                         <span className="font-mono font-bold text-slate-900">{m.completion_percentage}%</span>
@@ -711,7 +731,7 @@ export const PilotDetailPage: React.FC = () => {
                   <div key={ev.id} className="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-lg">
-                        📄
+                        <FileCheck className="w-5 h-5 text-blue-700" />
                       </div>
                       <div className="overflow-hidden">
                         <h4 className="font-bold text-slate-900 text-sm truncate">{ev.file_name}</h4>
@@ -807,7 +827,7 @@ export const PilotDetailPage: React.FC = () => {
         {activeTab === 'audit' && (
           <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-4">
             <h2 className="text-lg font-bold text-slate-900 border-b border-slate-100 pb-3">
-              📜 Governance Audit Trail
+              <span className="flex items-center gap-2"><ScrollText className="w-5 h-5 text-blue-600" /> Governance Audit Trail</span>
             </h2>
 
             <div className="space-y-3">

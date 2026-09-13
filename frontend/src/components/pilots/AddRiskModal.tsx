@@ -125,7 +125,7 @@ export const AddRiskModal: React.FC<Props> = ({ pilotId, isOpen, onClose, onSucc
                 <option value="LOW" className="text-slate-600">Low</option>
                 <option value="MEDIUM" className="text-amber-600">Medium</option>
                 <option value="HIGH" className="text-orange-600">High</option>
-                <option value="CRITICAL" className="text-red-600">Critical ⚠️</option>
+                <option value="CRITICAL" className="text-red-600">Critical</option>
               </select>
             </div>
 
