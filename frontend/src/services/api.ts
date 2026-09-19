@@ -33,14 +33,35 @@ export async function apiRequest<T>(
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...headers,
     },
-    ...(body ? { body: JSON.stringify(body) } : {}),
+    ...(body !== undefined
+      ? { body: typeof body === "string" ? body : JSON.stringify(body) }
+      : {}),
   });
 
   if (!response.ok) {
     const error = await response.json().catch(() => ({}));
-    throw new Error(
-      error.detail || `API error: ${response.status} ${response.statusText}`
-    );
+    let errorMessage = `API error: ${response.status} ${response.statusText}`;
+    if (error.detail) {
+      if (typeof error.detail === "string") {
+        errorMessage = error.detail;
+      } else if (Array.isArray(error.detail)) {
+        errorMessage = error.detail
+          .map((item: unknown) => {
+            if (typeof item === "object" && item !== null) {
+              const obj = item as Record<string, unknown>;
+              return obj.msg || obj.message || JSON.stringify(item);
+            }
+            return String(item);
+          })
+          .join("; ");
+      } else if (typeof error.detail === "object" && error.detail !== null) {
+        const obj = error.detail as Record<string, unknown>;
+        errorMessage = (obj.msg as string) || (obj.message as string) || JSON.stringify(error.detail);
+      }
+    } else if (error.message) {
+      errorMessage = error.message;
+    }
+    throw new Error(errorMessage);
   }
 
   return response.json() as Promise<T>;

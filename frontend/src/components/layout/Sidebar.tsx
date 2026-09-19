@@ -2,7 +2,7 @@
  * Sidebar — Clean Navigation Panel.
  *
  * Light Mode (#FFFFFF background with #E2E8F0 right border)
- * Primary Brand: Startup Procurement
+ * Primary Brand: StartupSetu
  */
 
 import { NavLink } from "react-router-dom";
@@ -29,6 +29,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Layers,
+  Sliders,
 } from "lucide-react";
 
 /** Icon lookup mapping */
@@ -48,6 +49,7 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Building2,
   Users,
   ClipboardCheck,
+  Sliders,
 };
 
 interface SidebarProps {
@@ -58,12 +60,12 @@ interface SidebarProps {
 export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
   const { user } = useAuth();
   const role: UserRole = user?.role || "GOVERNMENT_OFFICER";
-  const navGroups = navigationConfig[role] || navigationConfig.GOVERNMENT_OFFICER;
+  const navGroups = navigationConfig[role] || [];
 
   return (
     <aside
       className={cn(
-        "fixed top-0 left-0 z-30 h-screen bg-white border-r border-slate-200 transition-all duration-200 flex flex-col justify-between select-none",
+        "h-screen bg-white border-r border-slate-200 flex flex-col justify-between transition-all duration-200 select-none fixed left-0 top-0 z-30",
         collapsed ? "w-16" : "w-60"
       )}
     >
@@ -79,7 +81,7 @@ export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
             {!collapsed && (
               <div className="flex flex-col truncate">
                 <span className="text-xs font-extrabold text-slate-900 truncate tracking-tight">
-                  Startup Procurement
+                  StartupSetu
                 </span>
               </div>
             )}

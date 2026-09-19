@@ -1,5 +1,5 @@
 /**
- * Login Page — Startup Procurement.
+ * Login Page — StartupSetu.
  *
  * Minimal, production-ready enterprise government login.
  * Focused sign-in experience without marketing/workflow presentations.
@@ -93,7 +93,7 @@ export default function LoginPage() {
               </div>
               <div>
                 <span className="text-lg font-bold text-white tracking-tight leading-tight block">
-                  Startup Procurement
+                  StartupSetu
                 </span>
                 <span className="text-[11px] text-slate-400 font-medium tracking-wide uppercase">
                   Government Innovation Procurement Platform
@@ -128,7 +128,7 @@ export default function LoginPage() {
             {/* Header */}
             <div className="mb-8">
               <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
-                Sign in to Startup Procurement
+                Sign in to StartupSetu
               </h1>
               <p className="text-xs sm:text-sm text-slate-500 mt-1.5 leading-relaxed">
                 Use your authorized account to access the platform.

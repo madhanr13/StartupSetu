@@ -22,6 +22,7 @@ from app.api.analytics import router as analytics_router
 from app.api.audit_logs import router as audit_logs_router
 from app.api.innovation_memory import router as innovation_memory_router
 from app.api.settings import router as settings_router
+from app.api.simulations import router as simulations_router
 
 logger = logging.getLogger(__name__)
 
@@ -90,6 +91,7 @@ def create_app() -> FastAPI:
     app.include_router(audit_logs_router, prefix="/api")
     app.include_router(innovation_memory_router, prefix="/api")
     app.include_router(settings_router, prefix="/api")
+    app.include_router(simulations_router, prefix="/api")
 
     return app
 

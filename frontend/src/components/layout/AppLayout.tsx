@@ -51,7 +51,7 @@ export default function AppLayout() {
         </main>
 
         <footer className="py-3 px-6 border-t border-slate-200 bg-white text-center text-xs text-slate-500 font-medium">
-          Startup Procurement
+          StartupSetu
         </footer>
       </div>
     </div>

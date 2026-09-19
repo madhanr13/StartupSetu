@@ -50,6 +50,7 @@ import AuditLogPage from "@/pages/audit/AuditLogPage";
 import InnovationMemoryPage from "@/pages/memory/InnovationMemoryPage";
 import InnovationMemoryDetailPage from "@/pages/memory/InnovationMemoryDetailPage";
 import SettingsPage from "@/pages/settings/SettingsPage";
+import SimulationPage from "@/pages/simulation/SimulationPage";
 
 // Placeholder for unimplemented pages
 import PlaceholderPage from "@/pages/PlaceholderPage";
@@ -103,6 +104,7 @@ export default function App() {
           <Route path="/gov/pilots/:id/decision" element={<ProcurementDecisionPage />} />
           <Route path="/gov/analytics" element={<AnalyticsDashboardPage />} />
           <Route path="/gov/kpi-analytics" element={<AnalyticsDashboardPage />} />
+          <Route path="/gov/simulation" element={<SimulationPage />} />
           <Route path="/gov/procurement" element={<ProcurementScaleUpPage />} />
           <Route path="/gov/procurement/scale-up" element={<ProcurementScaleUpPage />} />
           <Route path="/gov/innovation-memory" element={<InnovationMemoryPage />} />
@@ -179,6 +181,7 @@ export default function App() {
           <Route path="/admin/audit-logs" element={<AuditLogPage />} />
           <Route path="/admin/reports" element={<AnalyticsDashboardPage />} />
           <Route path="/admin/analytics" element={<AnalyticsDashboardPage />} />
+          <Route path="/admin/simulation" element={<SimulationPage />} />
           <Route path="/admin/system-settings" element={<SettingsPage />} />
           <Route path="/admin/settings" element={<SettingsPage />} />
         </Route>
@@ -198,6 +201,7 @@ export default function App() {
           <Route path="/procurement/scale-up" element={<ProcurementScaleUpPage />} />
           <Route path="/analytics" element={<AnalyticsDashboardPage />} />
           <Route path="/kpi-analytics" element={<AnalyticsDashboardPage />} />
+          <Route path="/simulation" element={<SimulationPage />} />
           <Route path="/challenges/:id/submit-proposal" element={<ProposalSubmitPage />} />
         </Route>
 

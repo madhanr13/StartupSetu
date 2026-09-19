@@ -42,7 +42,7 @@ export default function LifecycleStepper({
         <div className="flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-blue-700"></span>
           <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700">
-            Startup Procurement Lifecycle
+            StartupSetu Innovation Lifecycle
           </h3>
         </div>
         <span className="text-xs text-slate-500 font-medium">

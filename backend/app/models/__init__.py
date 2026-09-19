@@ -70,6 +70,11 @@ from app.models.system_setting import (
     SystemSetting,
 )
 
+from app.models.simulation import (
+    ScenarioType,
+    SimulationScenario,
+)
+
 __all__ = [
     "Base",
     "User",
@@ -122,5 +127,7 @@ __all__ = [
     "SystemSetting",
     "SettingCategory",
     "SettingValueType",
+    "SimulationScenario",
+    "ScenarioType",
 ]
 

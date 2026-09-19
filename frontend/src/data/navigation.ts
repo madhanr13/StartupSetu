@@ -1,5 +1,5 @@
 /**
- * Navigation Configuration for Startup Procurement.
+ * Navigation Configuration for StartupSetu.
  */
 
 import type { UserRole } from "@/types";
@@ -38,6 +38,7 @@ export const govNavGroups: NavGroup[] = [
     groupName: "INTELLIGENCE",
     items: [
       { label: "KPI Analytics", path: "/gov/kpi-analytics", iconName: "BarChart3" },
+      { label: "What-If Simulator", path: "/gov/simulation", iconName: "Sliders" },
       { label: "Innovation Memory", path: "/gov/innovation-memory", iconName: "Brain" },
     ],
   },
@@ -106,6 +107,7 @@ export const adminNavGroups: NavGroup[] = [
       { label: "Departments", path: "/admin/departments", iconName: "Building2" },
       { label: "Startups", path: "/admin/startups", iconName: "Building" },
       { label: "All Challenges", path: "/admin/challenges", iconName: "Target" },
+      { label: "What-If Simulator", path: "/admin/simulation", iconName: "Sliders" },
     ],
   },
   {
