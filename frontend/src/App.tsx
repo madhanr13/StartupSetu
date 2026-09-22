@@ -51,6 +51,7 @@ import InnovationMemoryPage from "@/pages/memory/InnovationMemoryPage";
 import InnovationMemoryDetailPage from "@/pages/memory/InnovationMemoryDetailPage";
 import SettingsPage from "@/pages/settings/SettingsPage";
 import SimulationPage from "@/pages/simulation/SimulationPage";
+import ReportsPage from "@/pages/reports/ReportsPage";
 
 // Placeholder for unimplemented pages
 import PlaceholderPage from "@/pages/PlaceholderPage";
@@ -109,7 +110,7 @@ export default function App() {
           <Route path="/gov/procurement/scale-up" element={<ProcurementScaleUpPage />} />
           <Route path="/gov/innovation-memory" element={<InnovationMemoryPage />} />
           <Route path="/gov/innovation-memory/:id" element={<InnovationMemoryDetailPage />} />
-          <Route path="/gov/reports" element={<AnalyticsDashboardPage />} />
+          <Route path="/gov/reports" element={<ReportsPage />} />
           <Route path="/gov/audit-logs" element={<AuditLogPage />} />
           <Route path="/gov/settings" element={<SettingsPage />} />
         </Route>
@@ -179,7 +180,7 @@ export default function App() {
           <Route path="/admin/challenges/:id" element={<ChallengeDetailPage />} />
           <Route path="/admin/pilots" element={<PilotListPage />} />
           <Route path="/admin/audit-logs" element={<AuditLogPage />} />
-          <Route path="/admin/reports" element={<AnalyticsDashboardPage />} />
+          <Route path="/admin/reports" element={<ReportsPage />} />
           <Route path="/admin/analytics" element={<AnalyticsDashboardPage />} />
           <Route path="/admin/simulation" element={<SimulationPage />} />
           <Route path="/admin/system-settings" element={<SettingsPage />} />

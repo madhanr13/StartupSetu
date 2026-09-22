@@ -37,9 +37,6 @@ import {
   Building,
   CheckCircle2,
   Clock,
-  Copy,
-  Download,
-  FileBarChart,
   FlaskConical,
   Layers,
   Lightbulb,
@@ -48,12 +45,10 @@ import {
   Sparkles,
   Target,
   TrendingUp,
-  X,
 } from "lucide-react";
 
 import { analyticsService } from "@/services/analyticsService";
 import type {
-  AnalyticsReportExportResponse,
   BottleneckResponse,
   ChallengeAnalyticsResponse,
   OverviewMetricsResponse,
@@ -84,13 +79,7 @@ export default function AnalyticsDashboardPage() {
   // Selected pilot for deep dive
   const [selectedPilotId, setSelectedPilotId] = useState<string | null>(null);
 
-  // Export Report modal state
-  const [showExportModal, setShowExportModal] = useState(false);
-  const [exportType, setExportType] = useState<"PLATFORM" | "CHALLENGE" | "PILOT">("PLATFORM");
-  const [exportEntityId, setExportEntityId] = useState<string>("");
-  const [generatedReport, setGeneratedReport] = useState<AnalyticsReportExportResponse | null>(null);
-  const [isExporting, setIsExporting] = useState(false);
-  const [copySuccess, setCopySuccess] = useState(false);
+
 
   const fetchAllAnalytics = async () => {
     try {
@@ -142,41 +131,7 @@ export default function AnalyticsDashboardPage() {
     fetchAllAnalytics();
   };
 
-  const handleGenerateReport = async () => {
-    try {
-      setIsExporting(true);
-      const res = await analyticsService.exportSummaryReport({
-        type: exportType,
-        id: exportEntityId || undefined,
-        format: "markdown",
-      });
-      setGeneratedReport(res);
-    } catch (err: any) {
-      alert("Failed to export report: " + (err?.message || "Unknown error"));
-    } finally {
-      setIsExporting(false);
-    }
-  };
 
-  const handleCopyReport = () => {
-    if (generatedReport) {
-      navigator.clipboard.writeText(generatedReport.report_content);
-      setCopySuccess(true);
-      setTimeout(() => setCopySuccess(false), 2500);
-    }
-  };
-
-  const handleDownloadReport = () => {
-    if (generatedReport) {
-      const blob = new Blob([generatedReport.report_content], { type: "text/markdown;charset=utf-8" });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = `${generatedReport.report_title.replace(/\s+/g, "_")}.md`;
-      link.click();
-      URL.revokeObjectURL(url);
-    }
-  };
 
   if (isLoading) {
     return (
@@ -241,16 +196,6 @@ export default function AnalyticsDashboardPage() {
           >
             <RefreshCw className={`w-4 h-4 ${isRefreshing ? "animate-spin text-primary-600" : ""}`} />
             <span>{isRefreshing ? "Updating..." : "Refresh Telemetry"}</span>
-          </button>
-          <button
-            onClick={() => {
-              setGeneratedReport(null);
-              setShowExportModal(true);
-            }}
-            className="flex items-center space-x-2 px-4 py-2 bg-primary-800 text-white rounded-lg text-sm font-medium hover:bg-primary-900 transition-colors shadow-xs"
-          >
-            <FileBarChart className="w-4 h-4" />
-            <span>Export Report</span>
           </button>
         </div>
       </div>
@@ -1052,159 +997,6 @@ export default function AnalyticsDashboardPage() {
         )}
       </div>
 
-      {/* ── Export Report Modal ─────────────────────────────────── */}
-      {showExportModal && (
-        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-xl max-w-2xl w-full border border-slate-200 shadow-xl overflow-hidden">
-            <div className="p-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
-              <div className="flex items-center gap-2">
-                <FileBarChart className="w-5 h-5 text-primary-700" />
-                <h3 className="text-base font-bold text-slate-900">Export Procurement Intelligence Report</h3>
-              </div>
-              <button
-                onClick={() => setShowExportModal(false)}
-                className="text-slate-400 hover:text-slate-600 transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <div className="p-6 space-y-4">
-              {!generatedReport ? (
-                <>
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-                      Report Scope
-                    </label>
-                    <div className="grid grid-cols-3 gap-3">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setExportType("PLATFORM");
-                          setExportEntityId("");
-                        }}
-                        className={`p-3 rounded-lg border text-left text-xs font-semibold transition-all ${
-                          exportType === "PLATFORM"
-                            ? "border-primary-800 bg-primary-50 text-primary-900"
-                            : "border-slate-200 text-slate-700 hover:bg-slate-50"
-                        }`}
-                      >
-                        <BarChart3 className="w-4 h-4 mb-1.5" />
-                        Platform Executive Summary
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setExportType("CHALLENGE");
-                          if (challengesData?.challenges[0]) setExportEntityId(challengesData.challenges[0].challenge_id);
-                        }}
-                        className={`p-3 rounded-lg border text-left text-xs font-semibold transition-all ${
-                          exportType === "CHALLENGE"
-                            ? "border-primary-800 bg-primary-50 text-primary-900"
-                            : "border-slate-200 text-slate-700 hover:bg-slate-50"
-                        }`}
-                      >
-                        <Target className="w-4 h-4 mb-1.5" />
-                        Challenge Specific Report
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setExportType("PILOT");
-                          if (pilotsData?.pilots[0]) setExportEntityId(pilotsData.pilots[0].pilot_id);
-                        }}
-                        className={`p-3 rounded-lg border text-left text-xs font-semibold transition-all ${
-                          exportType === "PILOT"
-                            ? "border-primary-800 bg-primary-50 text-primary-900"
-                            : "border-slate-200 text-slate-700 hover:bg-slate-50"
-                        }`}
-                      >
-                        <FlaskConical className="w-4 h-4 mb-1.5" />
-                        Pilot Telemetry Report
-                      </button>
-                    </div>
-                  </div>
-
-                  {exportType === "CHALLENGE" && (
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                        Select Challenge
-                      </label>
-                      <select
-                        value={exportEntityId}
-                        onChange={(e) => setExportEntityId(e.target.value)}
-                        className="w-full text-xs p-2.5 border border-slate-300 rounded-lg bg-white"
-                      >
-                        {challengesData?.challenges.map((c) => (
-                          <option key={c.challenge_id} value={c.challenge_id}>
-                            {c.challenge_title}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  )}
-
-                  {exportType === "PILOT" && (
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
-                        Select Pilot
-                      </label>
-                      <select
-                        value={exportEntityId}
-                        onChange={(e) => setExportEntityId(e.target.value)}
-                        className="w-full text-xs p-2.5 border border-slate-300 rounded-lg bg-white"
-                      >
-                        {pilotsData?.pilots.map((p) => (
-                          <option key={p.pilot_id} value={p.pilot_id}>
-                            {p.pilot_title}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  )}
-
-                  <div className="pt-3">
-                    <button
-                      onClick={handleGenerateReport}
-                      disabled={isExporting}
-                      className="w-full py-2.5 bg-primary-800 text-white rounded-lg text-sm font-semibold hover:bg-primary-900 transition-colors flex items-center justify-center gap-2 shadow-xs disabled:opacity-50"
-                    >
-                      {isExporting ? <RefreshCw className="w-4 h-4 animate-spin" /> : <FileBarChart className="w-4 h-4" />}
-                      <span>{isExporting ? "Compiling Intelligence..." : "Generate Official Summary"}</span>
-                    </button>
-                  </div>
-                </>
-              ) : (
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-slate-800">{generatedReport.report_title}</span>
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={handleCopyReport}
-                        className="flex items-center gap-1.5 text-xs px-2.5 py-1.5 bg-slate-100 text-slate-700 rounded hover:bg-slate-200 transition-colors"
-                      >
-                        <Copy className="w-3.5 h-3.5" />
-                        <span>{copySuccess ? "Copied!" : "Copy"}</span>
-                      </button>
-                      <button
-                        onClick={handleDownloadReport}
-                        className="flex items-center gap-1.5 text-xs px-2.5 py-1.5 bg-primary-800 text-white rounded hover:bg-primary-900 transition-colors"
-                      >
-                        <Download className="w-3.5 h-3.5" />
-                        <span>Download .md</span>
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="bg-slate-900 text-slate-100 p-4 rounded-lg font-mono text-xs max-h-96 overflow-y-auto whitespace-pre-wrap">
-                    {generatedReport.report_content}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
